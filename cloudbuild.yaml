@@ -1,13 +1,41 @@
 steps:
+- name: 'gcr.io/cloud-builders/git'
+  secretEnv: ['SSH_KEY']
+  entrypoint: 'bash'
+  args:
+    - '-c'
+    - |
+        echo "$$SSH_KEY" >> /root/.ssh/id_rsa
+        chmod 400 /root/.ssh/id_rsa
+        ssh-keyscan -t rsa github.com > known_hosts.github
+        cp known_hosts.github /root/.ssh/known_hosts
+  volumes:
+    - name:ssh
+      path: /root/.ssh
+
 - name: "gcr.io/google.com/cloudsdktool/cloud-sdk"
   args:
   - gcloud
   - functions
   - deploy
   - service
-  - --region=us-central1
+  - --region=asia-south1
   - --source=.
   - --trigger-http
   - --entry-point=functions.HelloWorld
   - --runtime=java11
   - --allow-unauthenticated
+
+# Build the image
+- name: 'gcr.io/cloud-builders/docker'
+  args: ['build', '-t', 'gcr.io/niveustraining/my-image:v1.0', '.']
+    
+# Push the image to GCR
+- name: 'gcr.io/cloud-builders/docker'
+  args: ['push', 'gcr.io/niveustraining/my-image:v1.0']
+
+
+availableSecrets:
+  secretManager:
+    - versionName: projects/866354246469/secrets/secret-github/versions/latest
+      env: SSH_KEY
