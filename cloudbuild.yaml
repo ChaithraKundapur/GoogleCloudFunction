@@ -24,6 +24,17 @@ steps:
   - name: 'ssh'
     path: /root/.ssh
 
+- name: 'gcr.io/cloud-builders/mvn'
+  args: ['install']
+- name: "gcr.io/$PROJECT_ID/sonar-scanner:latest" 
+  args: [ 
+    "-Dsonar.projectKey=hello-world", 
+    "-Dsonar.sources=./src", 
+    "-Dsonar.host.url=http://35.200.250.32:9000", 
+    "-Dsonar.login=${_SONAR_TOKEN}",
+    "-Dsonar.java.binaries=.",
+    "-Dsonar.qualitygate.wait=true" ]
+
 - name: "gcr.io/google.com/cloudsdktool/cloud-sdk"
   args:
   - gcloud
@@ -45,8 +56,15 @@ steps:
 - name: 'gcr.io/cloud-builders/docker'
   args: ['push', 'gcr.io/niveustraining/my-image:v1.0']
 
+# vulnerabiliy scan
+- name: 'gcr.io/cloud-builders/gcloud'
+  args: ['beta', 'container', 'images', 'describe', 'gcr.io/niveustraining/my-image:v1.0', '--format=json']
+
 
 availableSecrets:
   secretManager:
   - versionName: projects/866354246469/secrets/secret-github/versions/latest
     env: 'SSH_KEY'
+
+substitutions:
+  _SONAR_TOKEN: "sqp_2e4f108a58ca9cc2ee09235b72efcf3f44b58f54"
