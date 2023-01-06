@@ -1,0 +1,13 @@
+steps:
+- name: "gcr.io/google.com/cloudsdktool/cloud-sdk"
+  args:
+  - gcloud
+  - functions
+  - deploy
+  - service
+  - --region=us-central1
+  - --source=.
+  - --trigger-http
+  - --entry-point=functions.HelloWorld
+  - --runtime=java11
+  - --allow-unauthenticated
