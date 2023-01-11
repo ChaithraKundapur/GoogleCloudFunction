@@ -19,7 +19,7 @@ steps:
   args:
   - clone
   - --recurse-submodules
-  - git@github.com:ChaithraKundapur/helloworld
+  - git@github.com:ChaithraKundapur/GoogleCloudFunction.git
   volumes:
   - name: 'ssh'
     path: /root/.ssh
