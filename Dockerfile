@@ -8,7 +8,7 @@
 # Run:      docker run -ti exoplatform/jdk:openjdk-11 -version
 
 
-FROM maven
+FROM 3.8.7-eclipse-temurin-11-alpine
 RUN mkdir /app
 WORKDIR /app
 COPY . /app
