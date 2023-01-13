@@ -25,16 +25,16 @@ steps:
     path: /root/.ssh
 
 #Static code analysis
-# - name: 'gcr.io/cloud-builders/mvn'
-#   args: ['install']
-# - name: "gcr.io/$PROJECT_ID/sonar-scanner:latest" 
-#   args: [ 
-#     "-Dsonar.projectKey=cloufunction", 
-#     "-Dsonar.sources=./src", 
-#     "-Dsonar.host.url=http://35.244.55.55:9000/",
-#     "-Dsonar.login=${_SONAR_TOKEN}",
-#     "-Dsonar.java.binaries=.",
-#     "-Dsonar.qualitygate.wait=true" ]
+- name: 'gcr.io/cloud-builders/mvn'
+  args: ['install']
+- name: "gcr.io/$PROJECT_ID/sonar-scanner:latest" 
+  args: [ 
+    "-Dsonar.projectKey=cloufunction", 
+    "-Dsonar.sources=./src", 
+    "-Dsonar.host.url=http://35.244.55.55:9000/",
+    "-Dsonar.login=${_SONAR_TOKEN}",
+    "-Dsonar.java.binaries=.",
+    "-Dsonar.qualitygate.wait=true" ]
 
 #Deploying google cloud function
 - name: "gcr.io/google.com/cloudsdktool/cloud-sdk"
