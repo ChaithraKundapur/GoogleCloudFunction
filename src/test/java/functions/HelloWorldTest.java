@@ -72,7 +72,6 @@ import org.junit.jupiter.api.*;
 
 public class HelloWorldTest {
 
-    private Logger log = Logger.getLogger(this.getClass());
     @BeforeAll
     static void initAll() {
     }
