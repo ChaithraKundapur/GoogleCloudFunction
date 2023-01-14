@@ -12,7 +12,7 @@ FROM openjdk:8-jre-alpine
 RUN mkdir /app
 WORKDIR /app
 COPY . /app
-RUN mvn clean install
+# RUN mvn clean install
 
 
 # Base Alpine Linux based image with OpenJDK JRE only
