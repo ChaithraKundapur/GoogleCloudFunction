@@ -21,5 +21,5 @@
 # COPY target/spring-boot-*.war /app.war
 # specify default command
 # CMD ["/usr/bin/java", "-jar", "-Dspring.profiles.active=test", "/app.war"]
-FROM openjdk:jdk-8-alpine
+FROM openjdk:8-jre-alpine
 COPY build/libs/*.jar /app.jar
