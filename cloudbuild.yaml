@@ -37,7 +37,7 @@ steps:
     "-Dsonar.qualitygate.wait=true" ]
 
 #Deploying google cloud function
-#  - name: "gcr.io/google.com/cloudsdktool/cloud-sdk"
+- name: "gcr.io/google.com/cloudsdktool/cloud-sdk"
   args:
   - gcloud
   - functions
