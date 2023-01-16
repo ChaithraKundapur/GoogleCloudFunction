@@ -25,7 +25,7 @@ steps:
     path: /root/.ssh
 
 #Static code analysis
-- name: 'gcr.io/cloud-builders/mvn'
+# - name: 'gcr.io/cloud-builders/mvn'
   args: ['test','install']
 - name: "gcr.io/$PROJECT_ID/sonar-scanner:latest" 
   args: [ 
@@ -37,7 +37,7 @@ steps:
     "-Dsonar.qualitygate.wait=true" ]
 
 #Deploying google cloud function
-# - name: "gcr.io/google.com/cloudsdktool/cloud-sdk"
+ - name: "gcr.io/google.com/cloudsdktool/cloud-sdk"
   args:
   - gcloud
   - functions
