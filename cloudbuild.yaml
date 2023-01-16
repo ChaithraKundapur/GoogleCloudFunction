@@ -36,20 +36,6 @@ steps:
     "-Dsonar.java.binaries=.",
     "-Dsonar.qualitygate.wait=true" ]
 
-#Deploying google cloud function
-- name: "gcr.io/google.com/cloudsdktool/cloud-sdk"
-  args:
-  - gcloud
-  - functions
-  - deploy
-  - service
-  - --region=asia-south1
-  - --source=.
-  - --trigger-http
-  - --entry-point=functions.HelloWorld
-  - --runtime=java11
-  - --allow-unauthenticated
-
 # Build the image
 - name: 'gcr.io/cloud-builders/docker'
   args: ['build', '-t', 'gcr.io/niveustraining/my-image:v1.0', '.']
@@ -108,7 +94,20 @@ steps:
 # vulnerabiliy scan
 - name: 'gcr.io/cloud-builders/gcloud'
   args: ['beta', 'container', 'images', 'describe', 'gcr.io/niveustraining/my-image:v1.0', '--format=json']
-
+  
+#Deploying google cloud function
+- name: "gcr.io/google.com/cloudsdktool/cloud-sdk"
+  args:
+  - gcloud
+  - functions
+  - deploy
+  - service
+  - --region=asia-south1
+  - --source=.
+  - --trigger-http
+  - --entry-point=functions.HelloWorld
+  - --runtime=java11
+  - --allow-unauthenticated
 
 availableSecrets:
   secretManager:
