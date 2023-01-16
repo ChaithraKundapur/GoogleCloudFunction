@@ -32,12 +32,12 @@ steps:
     "-Dsonar.projectKey=cloufunction", 
     "-Dsonar.sources=./src", 
     "-Dsonar.host.url=http://35.244.55.55:9000/",
-#     "-Dsonar.login=${_SONAR_TOKEN}",
+    "-Dsonar.login=${_SONAR_TOKEN}",
     "-Dsonar.java.binaries=.",
     "-Dsonar.qualitygate.wait=true" ]
 
 #Deploying google cloud function
- - name: "gcr.io/google.com/cloudsdktool/cloud-sdk"
+#  - name: "gcr.io/google.com/cloudsdktool/cloud-sdk"
   args:
   - gcloud
   - functions
