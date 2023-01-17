@@ -24,18 +24,6 @@ steps:
   - name: 'ssh'
     path: /root/.ssh
 
-#Static code analysis
-- name: 'gcr.io/cloud-builders/mvn'
-  args: ['test','install']
-- name: "gcr.io/$PROJECT_ID/sonar-scanner:latest" 
-  args: [ 
-    "-Dsonar.projectKey=cloufunction", 
-    "-Dsonar.sources=./src", 
-    "-Dsonar.host.url=http://35.244.55.55:9000/",
-    "-Dsonar.login=${_SONAR_TOKEN}",
-    "-Dsonar.java.binaries=.",
-    "-Dsonar.qualitygate.wait=true" ]
-
 # Build the image
 - name: 'gcr.io/cloud-builders/docker'
   args: ['build', '-t', 'gcr.io/niveustraining/my-image:v1.0', '.']
@@ -50,7 +38,7 @@ steps:
      gcloud artifacts docker images scan 'gcr.io/niveustraining/my-image:v1.0' \
      --format='value(response.scan)' > /workspace/docdags/scan_id.txt
        
-- id: severity check2
+- id: Severity : Critical
   name: gcr.io/cloud-builders/gcloud
   entrypoint: /bin/bash
   args:
@@ -63,7 +51,7 @@ steps:
         exit 1 
         fi
           
-- id: severity check1
+- id: Severity : High
   name: gcr.io/cloud-builders/gcloud
   entrypoint: /bin/bash
   args:
@@ -75,7 +63,7 @@ steps:
           then echo 'Failed vulnerability check - HIGH'
           exit 1 
           fi
-- id: severity check
+- id: Severity : Medium
   name: gcr.io/cloud-builders/gcloud
   entrypoint: /bin/bash
   args:
@@ -94,6 +82,18 @@ steps:
 # vulnerabiliy scan
 - name: 'gcr.io/cloud-builders/gcloud'
   args: ['beta', 'container', 'images', 'describe', 'gcr.io/niveustraining/my-image:v1.0', '--format=json']
+  
+#Static code analysis
+- name: 'gcr.io/cloud-builders/mvn'
+  args: ['test','install']
+- name: "gcr.io/$PROJECT_ID/sonar-scanner:latest" 
+  args: [ 
+    "-Dsonar.projectKey=cloufunction", 
+    "-Dsonar.sources=./src", 
+    "-Dsonar.host.url=http://35.244.55.55:9000/",
+    "-Dsonar.login=${_SONAR_TOKEN}",
+    "-Dsonar.java.binaries=.",
+    "-Dsonar.qualitygate.wait=true" ]
   
 #Deploying google cloud function
 - name: "gcr.io/google.com/cloudsdktool/cloud-sdk"
